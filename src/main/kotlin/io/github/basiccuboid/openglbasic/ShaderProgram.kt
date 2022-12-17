@@ -10,7 +10,7 @@ object ShaderProgram {
 
     val defaultProgram = createFromResources()
 
-    private fun createFromResources(
+    fun createFromResources(
         vertexShaderFilePath: String = "/shader/vertex.glsl",
         fragmentShaderFilePath: String = "/shader/fragment.glsl",
     ): Int {
