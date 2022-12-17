@@ -7,22 +7,36 @@ import org.lwjgl.opengl.GL41
 
 private val logger = KotlinLogging.logger {}
 
-class Uniform(shaderProgramId: Int) {
+class Uniform(shaderProgramId: Int, withTexture: Boolean = true) {
 
     private val locations: Map<String, Int>
 
     init {
         logger.info { "Create Uniforms for ShaderProgram with id='$shaderProgramId'" }
-        locations = initializeLocations(shaderProgramId)
+        locations = initializeLocations(shaderProgramId, withTexture)
     }
 
-    private fun initializeLocations(shaderProgramId: Int) =
-        mapOf(
-            createLocation(shaderProgramId, MODEL_MATRIX),
-            createLocation(shaderProgramId, VIEW_MATRIX),
-            createLocation(shaderProgramId, PROJECTION_MATRIX),
-            createLocation(shaderProgramId, TEXTURE_SAMPLER0)
-        )
+    private fun initializeLocations(shaderProgramId: Int, withTexture: Boolean = true) =
+        if (withTexture) {
+            mapOf(
+                createLocation(shaderProgramId, MODEL_MATRIX),
+                createLocation(shaderProgramId, VIEW_MATRIX),
+                createLocation(shaderProgramId, PROJECTION_MATRIX),
+                createLocation(shaderProgramId, TEXTURE_SAMPLER0),
+            )
+        } else {
+            mapOf(
+                createLocation(shaderProgramId, MODEL_MATRIX),
+                createLocation(shaderProgramId, VIEW_MATRIX),
+                createLocation(shaderProgramId, PROJECTION_MATRIX),
+            )
+        }
+
+    fun upload(model: Matrix4f, view: Matrix4f, projection: Matrix4f) {
+        uploadMatrix(locations[MODEL_MATRIX]!!, model)
+        uploadMatrix(locations[VIEW_MATRIX]!!, view)
+        uploadMatrix(locations[PROJECTION_MATRIX]!!, projection)
+    }
 
     fun upload(model: Matrix4f, view: Matrix4f, projection: Matrix4f, textureId: Int) {
         uploadMatrix(locations[MODEL_MATRIX]!!, model)
