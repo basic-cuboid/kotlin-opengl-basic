@@ -19,3 +19,9 @@ A simple Kotlin library for basic OpenGL functionality like: create
 ```
 $ ./gradlew clean build
 ```
+
+## Publish to local Maven repository
+
+```
+$ ./gradlew publishToMavenLocal
+```

@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.7.21"
+    `maven-publish`
 }
 
 group = "io.github.basic-cuboid"
@@ -56,5 +57,17 @@ tasks.jar {
                 "Implementation-Version" to project.version
             )
         )
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "io.github.basic-cuboid"
+            artifactId = "kotlin-opengl-basic"
+            version = "1.0.0-SNAPSHOT"
+
+            from(components["java"])
+        }
     }
 }
